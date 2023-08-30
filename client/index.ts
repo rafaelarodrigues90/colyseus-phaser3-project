@@ -76,18 +76,43 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    if (!this.currentPlayer) {
+      return;
+    }
+
+    const velocity = 2;
     this.inputPayload.left = this.cursorKeys.left.isDown;
     this.inputPayload.right = this.cursorKeys.right.isDown;
     this.inputPayload.up = this.cursorKeys.up.isDown;
     this.inputPayload.down = this.cursorKeys.down.isDown;
     this.room.send(0, this.inputPayload);
 
+    if (this.inputPayload.left) {
+      this.currentPlayer.x -= velocity;
+    } else if (this.inputPayload.right) {
+      this.currentPlayer.x += velocity;
+    }
+
+    if (this.inputPayload.up) {
+      this.currentPlayer.y -= velocity;
+    } else if (this.inputPayload.down) {
+      this.currentPlayer.y += velocity;
+    }
+
     for (let sessionId in this.playerEntities) {
+      if (sessionId === this.room.sessionId) {
+        continue;
+      }
+
       const entity = this.playerEntities[sessionId];
       const { serverX, serverY } = entity.data.values;
 
       entity.x = Phaser.Math.Linear(entity.x, serverX, 0.2);
       entity.y = Phaser.Math.Linear(entity.y, serverY, 0.2);
+    }
+
+    if (!this.currentPlayer) {
+      return;
     }
   }
 }
