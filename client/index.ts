@@ -175,7 +175,7 @@ const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: "#b6d53c",
+  backgroundColor: "#202855",
   parent: "phaser-example",
   physics: { default: "arcade" },
   pixelArt: true,
