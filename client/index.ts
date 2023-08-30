@@ -15,6 +15,9 @@ export class GameScene extends Phaser.Scene {
 
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
 
+  currentPlayer: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+  remoteRef: Phaser.GameObjects.Rectangle;
+
   preload() {
     this.load.image(
       "ship_0001",
@@ -31,6 +34,22 @@ export class GameScene extends Phaser.Scene {
       this.room.state.players.onAdd((player, sessionId) => {
         const entity = this.physics.add.image(player.x, player.y, "ship_0001");
         this.playerEntities[sessionId] = entity;
+
+        if (sessionId === this.room.sessionId) {
+          this.currentPlayer = entity;
+          this.remoteRef = this.add.rectangle(
+            0,
+            0,
+            entity.width,
+            entity.height
+          );
+          this.remoteRef.setStrokeStyle(1, 0xff0000);
+
+          player.onChange(() => {
+            this.remoteRef.x = player.x;
+            this.remoteRef.y = player.y;
+          });
+        }
 
         player.onChange(() => {
           entity.setData("serverX", player.x);
