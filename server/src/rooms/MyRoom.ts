@@ -10,8 +10,8 @@ export class MyRoom extends Room<MyRoomState> {
     this.setState(new MyRoomState());
 
     // set map dimensions
-    this.state.mapWidth = 800;
-    this.state.mapHeight = 600;
+    this.state.mapWidth = options.screenWidth / 2;
+    this.state.mapHeight = options.screenHeight / 2;
 
     this.onMessage(0, (client, input) => {
       // handle player input

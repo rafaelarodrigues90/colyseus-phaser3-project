@@ -46,7 +46,10 @@ export class GameScene extends Phaser.Scene {
     const client = new Client("ws://localhost:2567");
 
     try {
-      this.room = await client.joinOrCreate("my_room", {});
+      this.room = await client.joinOrCreate("my_room", {
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+      });
 
       // connection successful!
       connectionStatusText.destroy();
@@ -103,7 +106,7 @@ export class GameScene extends Phaser.Scene {
 
     // this.cameras.main.startFollow(this.ship, true, 0.2, 0.2);
     // this.cameras.main.setZoom(1);
-    this.cameras.main.setBounds(0, 0, 800, 600);
+    this.cameras.main.setBounds(0, 0, window.innerWidth, window.innerHeight);
   }
 
   update(time: number, delta: number): void {
@@ -170,8 +173,8 @@ export class GameScene extends Phaser.Scene {
 // game config
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
   backgroundColor: "#b6d53c",
   parent: "phaser-example",
   physics: { default: "arcade" },
